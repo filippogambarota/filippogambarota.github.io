@@ -15,7 +15,7 @@ about:
 ---
 
 ::: {#hero-heading}
-I am a [post-doc researcher](https://www.dpss.unipd.it/filippo-gambarota) at the University of Padova, Department of Developmental Psychology and Socialization.
+I am a [post-doc researcher](https://www.dpss.unipd.it/filippo-gambarota) at the University of Padova, Department of Developmental Psychology and Socialisation.
 
 My research concern **meta-analysis**, **data simulation** for power and design analysis and **multiverse analysis**. I am part of the [Psicostat](https://psicostat.dpss.psy.unipd.it/) research group.
 
