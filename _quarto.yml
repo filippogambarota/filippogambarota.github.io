@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  page-navigation: true
+
+  # page-footer:
+    # left: "`r sprintf('&copy; Copyright %s, Filippo Gambarota', format(Sys.Date(), '%Y'))`"
+    # right: "This page is built with ❤️ and [Quarto](https://quarto.org/)."
+
+  navbar:
+      left:
+        - href: index.qmd
+          text: home
+        - href: about.qmd
+          text: about
+        - href: https://filippogambarota.github.io/cv/
+          target: _blank
+          text: cv
+        - href: statnotes.qmd
+          text: statistics notes
+        - href: coding.qmd
+          text: coding
+
+format:
+  html:
+    theme: simplex
+    css: styles.css
+    toc: true

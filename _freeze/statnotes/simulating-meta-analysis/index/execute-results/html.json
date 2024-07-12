@@ -1,0 +1,15 @@
+{
+  "hash": "58c131e70046c026a3fdc98e34912095",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Simulating meta-analysis\"\ndate: \"2024-01-28\"\ncategories: [meta-analysis]\n---\n\n::: {.cell}\n\n```{.r .cell-code}\n# simulating a model with experiments nested within papers. Experiments\n# can have 1 (ACC or RT) or 2 (ACC and RT) outcomes collected on the \n# same pool of subjects. Thus we have a multilevel and multivariate\n# data sct\n\nlibrary(metafor)\n\nseqw <- function(x){\n  unlist(sapply(x, function(i) 1:i))\n}\n\nset.seed(2023)\n\nK <- 1000 # number of papers\nJ <- sample(1:3, K, replace = TRUE) # number of studies, within each paper\nZ <- sample(1:2, sum(J), replace = TRUE) # number of outcomes per study/paper\n\ndat <- data.frame(paper = rep(rep(1:K, J), Z), \n                  exp = rep(seqw(J), Z), \n                  effect = seqw(Z))\n\n# residual variance components\ntau2 <- 0.3\nomega2 <- 0.1\nzeta2 <- 0.1\n\nb0 <- 0.1\nb1 <- 0.1\n\n# random effects\nb0_i <- rnorm(K, 0, sqrt(tau2))\nb0_ij <- rnorm(sum(J), 0, sqrt(omega2))\nb0_ijz <- rnorm(nrow(dat), 0, sqrt(zeta2))\n\n# add to dataframe\ndat$b0_i <- b0_i[dat$paper]\ndat$b0_ij <- rep(b0_ij, Z)\ndat$b0_ijz <- b0_ijz\ndat$vi <- runif(nrow(dat), 0.05, 0.1)\n\n# create block-matrix\nV <- vcalc(vi, cluster = paper, subgroup = exp, obs = effect, rho = 0.7, data = dat)\nVb <- blsplit(V, dat$paper, fun = round, 3)\n\n# sampling errors\ne_ij <- MASS::mvrnorm(1, mu = rep(0, nrow(V)), Sigma = V)\n\n# moderator (ACC, RT)\ndat$x <- ifelse(dat$effect == 1, 1, 0)\n\n# simulate effect\ndat$yi <- with(dat, (b0 + b0_i + b0_ij + b0_ijz) + b1*x + e_ij)\ndat$x <- factor(dat$x)\ndat$exp <- factor(dat$exp)\n\n# without aggregation\nfit0 <- rma.mv(yi, V, random = ~1|paper/exp, data = dat, sparse = TRUE)\n\n# with aggregation\ndat <- escalc(yi = yi, vi = vi, data = dat)\n\ndatl <- split(dat, dat$paper)\ndatl <- lapply(datl, function(x) aggregate(x, cluster = exp, rho = 0.7))\ndatagg <- do.call(rbind, datl)\n\nfit1 <- rma.mv(yi, vi, random = ~1|paper/exp, data = datagg, sparse = TRUE)\n\nsummary(fit0)\nsummary(fit1)\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

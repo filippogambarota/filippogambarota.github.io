@@ -1,0 +1,27 @@
+---
+engine: knitr
+---
+
+```{r}
+#| output: asis
+#| echo: false
+qmd <- list.files("statnotes", full.names = TRUE, recursive = TRUE, pattern = "qmd")
+get_title <- function(qmd){
+    lines <- readLines(qmd)
+    yaml_idx <- grep("^---", lines)
+    yaml <- lines[(yaml_idx[1] + 1):(yaml_idx[2] - 1)]
+    if(any(grepl("^title:", yaml))){
+        title <- yaml[grep("^title:", yaml)]
+        out <- gsub("title:\\s*", "", title)
+        gsub('"', "", out)
+    }else{
+        basename(dirname(qmd))
+    }
+}
+
+title <- sapply(qmd, get_title)
+last_mod <- format(file.info(qmd)$mtime, "%Y-%m-%d")
+sprintf("- [%s](%s) *[Last update: %s]*", title, qmd, last_mod) |> 
+    cat(sep = "\n")
+```
+

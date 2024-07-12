@@ -1,0 +1,18 @@
+---
+engine: knitr
+---
+
+```{r}
+#| include: false
+
+library(tidyverse)
+library(googledrive)
+
+gdrive_website <- "https://docs.google.com/spreadsheets/d/1ImCqCoVA-R9SUuCUaqfyOvSu3ZChef4tvASxZcjEYMk/edit?gid=0#gid=0"
+googledrive::drive_auth("filippo.gambarota@gmail.com")
+
+drive_download(gdrive_website, path = "files/website.xlsx", overwrite = TRUE)
+```
+
+#### Replicability Crisis in Science?
+

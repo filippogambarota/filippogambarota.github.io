@@ -1,0 +1,36 @@
+---
+engine: knitr
+---
+
+# Academic
+
+- {{< fa brands github>}} [stat-teaching](https://github.com/stat-teaching) for my teaching materials
+- {{< fa brands github>}} [shared-research](https://github.com/shared-research) for my papers
+- {{< fa brands github>}} [students-starting](https://github.com/students-starting) for templates for students
+- {{< fa brands github>}} [filippogambarota](https://github.com/students-starting) for my projects
+
+# Workplace
+
+- I work at the Department of Developmental Psychology and Socialization, University of Padova.
+- My office is 022, 5th floor CLA building, Via Venezia, 16, 35131 Padova (PD)
+
+# Contact
+
+- You can write me at {{< fa envelope >}} [filippo.gambarota@unipd.it](mailto:filippo.gambarota@unipd.it)
+- Zoom: [https://unipd.zoom.us/my/filippo.gambarota
+](https://unipd.zoom.us/my/filippo.gambarota)
+        
+# Social Media
+
+I'm trying to declutter social media (without a great success Tbh 😵) however you can find me on:
+
+- [Twitter](https://twitter.com/fgambarota) `r fontawesome::fa("twitter")`
+- [Instagram](https://www.instagram.com/filippogambarota/) `r fontawesome::fa("instagram")`
+- I'm a TV-Shows addicted 😵! Check my [**Trakt**](https://trakt.tv/users/filippo-gambarota) profile
+
+</br>
+</br>
+<center>
+<a class="twitter-timeline" data-width="500" data-height="400" href="https://twitter.com/fgambarota?ref_src=twsrc%5Etfw">Tweets by fgambarota</a>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</center>

@@ -1,0 +1,15 @@
+{
+  "hash": "5ba3fb5f56e9ae63fd78dd8e0f1a4813",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Simulating Effect Sizes\"\ndate: \"2024-01-28\"\ncategories: [effect-size]\n---\n\n\n# Intro\n\nThe paper by Viechtbauer ([2005](https://journals.sagepub.com/doi/pdf/10.3102/10769986030003261)) provide a clear way to simulate standardized (SMD) and unstandardized (UMD) effect sizes for simulation studies.\n\n# Unstandardized effect sizes\n\nWe define two independent groups as:\n\n$$\nX^C_{ij} \\sim N(\\mu^C_i, \\sigma^2_i) \\\\\nX^E_{ij} \\sim N(\\mu^E_i, \\sigma^2_i)\n$$\n\nand the UMD as:\n\n$$\nES_i = \\mu^E_i - \\mu^C_i\n$$\n\nWith sampling variance:\n\n$$\n\\sigma^2_{\\epsilon_i} = s^2_i\\left(\\frac{1}{n^E_i} + \\frac{1}{n^C_i}\\right)\n$$\n\nWhere $s^2_i$ is the typical pooled within-group variance.\n\nIn this case we simulate participant-level data:\n\n\n::: {.cell}\n\n```{.r .cell-code}\nES <- 0.3\ns <- 1\nn_E <- 30\nn_C <- 30\nk <- 30\n\ndi <- rnorm(k, ES, s * (1/n_E + 1/n_C))\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

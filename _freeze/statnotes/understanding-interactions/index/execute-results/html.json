@@ -1,0 +1,17 @@
+{
+  "hash": "a4ccc6a0fdc2c2f58f19ec931d9dd4a1",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Understanding interactions\"\ndate: \"2024-01-28\"\ncategories: [linear-regression]\n---\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nx1 <- c(\"a\", \"b\")\nx2 <- c(\"c\", \"d\")\n\ndat <- expand.grid(id = 1:20, x1 = x1, x2 = x2)\ncontrasts(dat$x1) <- c(-0.5, 0.5)\ncontrasts(dat$x2) <- c(-0.5, 0.5)\ndat$y <- rnorm(nrow(dat))\n\n# grand mean (intercept)\n\ngm <- mean(aggregate(y ~ x1 + x2, data = dat, mean)$y)\n\n# main effect x1\n\nmx1 <- diff(aggregate(y ~ x1, data = dat, mean)$y)\n\n# main effect x2\n\nmx2 <- diff(aggregate(y ~ x2, data = dat, mean)$y)\n\n# plot\n\ninteraction.plot(dat$x1, dat$x2, dat$y, fun = mean)\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n\n```{.r .cell-code}\n# interaction x1:x2\n\nint <- aggregate(y ~ x1 + x2, data = dat, mean)\nint <- tidyr::pivot_wider(int, names_from = c(x1, x2), values_from = y)\nintx1x2 <- (int$a_c - int$a_d) - (int$b_c  - int$b_d)\n\n# model\n\nfit <- lm(y ~ x1 * x2, data = dat)\n\ncar::Anova(fit, type = \"3\")\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\nAnova Table (Type III tests)\n\nResponse: y\n            Sum Sq Df F value Pr(>F)\n(Intercept)  0.011  1  0.0119 0.9134\nx1           0.117  1  0.1207 0.7292\nx2           0.064  1  0.0660 0.7980\nx1:x2        0.046  1  0.0478 0.8275\nResiduals   73.364 76               \n```\n\n\n:::\n\n```{.r .cell-code}\nrbind(\"model\" = coef(fit),\n      \"manual\" = c(gm, mx1, mx2, intx1x2))\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n       (Intercept)         x11         x21    x11:x21\nmodel   0.01197932 -0.07633766 -0.05642767 0.09607497\nmanual  0.01197932 -0.07633766 -0.05642767 0.09607497\n```\n\n\n:::\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

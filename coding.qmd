@@ -1,0 +1,28 @@
+---
+engine: knitr
+---
+
+I'm a (very beginner 😁) coding keen! I love everything related to code and I'm trying to keep learning everyday!
+
+## Coding Projects
+
+- [`todoget`](https://github.com/filippogambarota/todoget): a python script for tracking specific tags (`#TODO`, `#TOREVIEW`) within a generic folder
+- [`trackdown`](https://github.com/ClaudioZandonella/trackdown): a R package to collaborate on *RMarkdown* documents using Google Docs
+
+## Languages
+
+- `r fontawesome::fa("r-project")` is my main language! I'm very fluent with R and I teach also university level courses (check the [ARCA courses](https://www.dpss.unipd.it/arca/home)).
+- I'm learning **Python** especially for creating psychological experiments and automatizing stuff on **linux**
+- I use **Matlab** for doing image processing, analyzing EEG data and creating psychological experiments
+- I use **HTML** and **CSS** mainly for producing documents, slides, websites and reports together with **RMarkdown**
+- I use **bash** for managing my **Linux** laptop (I've recently switched to linux and I totally love that penguin `r fontawesome::fa("linux")`)
+
+## Markup
+
+- I totally love **Markdown**! I use it for everything (slides, reports, websites, notes, etc.)
+- I know a little bit of **Latex**, especially with the **RMarkdown** and **knitr** framework
+
+## What I want to learn/improve
+
+- **Python**! especially with data science oriented modules
+- The **HTML/CSS/Javascript** combination

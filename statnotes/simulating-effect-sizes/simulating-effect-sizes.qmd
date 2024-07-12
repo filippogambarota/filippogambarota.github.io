@@ -1,0 +1,45 @@
+---
+title: "Simulating Effect Sizes"
+date: "2024-01-28"
+categories: [effect-size]
+---
+
+# Intro
+
+The paper by Viechtbauer ([2005](https://journals.sagepub.com/doi/pdf/10.3102/10769986030003261)) provide a clear way to simulate standardized (SMD) and unstandardized (UMD) effect sizes for simulation studies.
+
+# Unstandardized effect sizes
+
+We define two independent groups as:
+
+$$
+X^C_{ij} \sim N(\mu^C_i, \sigma^2_i) \\
+X^E_{ij} \sim N(\mu^E_i, \sigma^2_i)
+$$
+
+and the UMD as:
+
+$$
+ES_i = \mu^E_i - \mu^C_i
+$$
+
+With sampling variance:
+
+$$
+\sigma^2_{\epsilon_i} = s^2_i\left(\frac{1}{n^E_i} + \frac{1}{n^C_i}\right)
+$$
+
+Where $s^2_i$ is the typical pooled within-group variance.
+
+In this case we simulate participant-level data:
+
+```{r}
+ES <- 0.3
+s <- 1
+n_E <- 30
+n_C <- 30
+k <- 30
+
+di <- rnorm(k, ES, s * (1/n_E + 1/n_C))
+```
+
