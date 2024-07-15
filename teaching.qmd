@@ -12,7 +12,19 @@ gdrive_website <- "https://docs.google.com/spreadsheets/d/1ImCqCoVA-R9SUuCUaqfyO
 googledrive::drive_auth("filippo.gambarota@gmail.com")
 
 drive_download(gdrive_website, path = "files/website.xlsx", overwrite = TRUE)
+
+teaching <- readxl::read_xlsx("files/website.xlsx", sheet = "teaching")
 ```
 
-#### Replicability Crisis in Science?
+```{r}
+#| output: asis
+#| echo: false
+teaching <- arrange(teaching, date, title)
+teachingl <- split(teaching, teaching$date)
+
+for (i in 1:length(teachingl)) {
+    cat(sprintf("## Academic Year %s", teachingl[[i]]$date), "\n\n")
+    cat(sprintf("- #### %s [{{< fa globe >}}](%s) [{{< fa brands github >}}](%s)", teachingl[[i]]$title,teachingl[[i]]$general_link, teachingl[[i]]$github), "\n\n")
+}
+```
 

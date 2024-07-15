@@ -119,13 +119,6 @@
     "text": "Intro\nThe paper by Viechtbauer (2005) provide a clear way to simulate standardized (SMD) and unstandardized (UMD) effect sizes for simulation studies.\n\n\nUnstandardized effect sizes\nWe define two independent groups as:\n\\[\nX^C_{ij} \\sim N(\\mu^C_i, \\sigma^2_i) \\\\\nX^E_{ij} \\sim N(\\mu^E_i, \\sigma^2_i)\n\\]\nand the UMD as:\n\\[\nES_i = \\mu^E_i - \\mu^C_i\n\\]\nWith sampling variance:\n\\[\n\\sigma^2_{\\epsilon_i} = s^2_i\\left(\\frac{1}{n^E_i} + \\frac{1}{n^C_i}\\right)\n\\]\nWhere \\(s^2_i\\) is the typical pooled within-group variance.\nIn this case we simulate participant-level data:\n\nES &lt;- 0.3\ns &lt;- 1\nn_E &lt;- 30\nn_C &lt;- 30\nk &lt;- 30\n\ndi &lt;- rnorm(k, ES, s * (1/n_E + 1/n_C))"
   },
   {
-    "objectID": "teaching.html",
-    "href": "teaching.html",
-    "title": "",
-    "section": "",
-    "text": "Replicability Crisis in Science?"
-  },
-  {
     "objectID": "statnotes.html",
     "href": "statnotes.html",
     "title": "",

@@ -18,6 +18,8 @@ website:
         - href: https://filippogambarota.github.io/cv/
           target: _blank
           text: cv
+        - href: teaching.qmd
+          text: teaching
         - href: statnotes.qmd
           text: statistics notes
         - href: coding.qmd
