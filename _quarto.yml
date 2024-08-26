@@ -22,6 +22,8 @@ website:
           text: teaching
         - href: statnotes.qmd
           text: statistics notes
+        - href: slides.qmd
+          text: slides
         - href: coding.qmd
           text: coding
 
