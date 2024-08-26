@@ -4,4 +4,4 @@ engine: knitr
 
 # 2024
 
-- **Are all interaction false?** - [*AIP 2024, Developmental and Educational Psychology*] [{{< fa file-pdf >}}](files/2024-aip-sviluppo.pdf)
+- **Are all interaction false?** - [*AIP 2024, Developmental and Educational Psychology*] [{{< fa file-pdf >}}](files/slides/2024-aip-sviluppo.pdf)
