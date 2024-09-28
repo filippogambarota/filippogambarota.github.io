@@ -1,0 +1,226 @@
+a, a > code {
+  color: rgb(249, 38, 114);
+  text-decoration: none;
+}
+.footnote {
+  position: absolute;
+  bottom: 3em;
+  padding-right: 4em;
+  font-size: 90%;
+}
+.remark-code-line-highlighted     { background-color: #ffff88; }
+
+.remark-slide-content {
+    font-size: 23px;
+}
+
+.inverse {
+  background-color: #272822;
+  color: #d6d6d6;
+  text-shadow: 0 0 20px #333;
+}
+.inverse h1, .inverse h2, .inverse h3 {
+  color: #f3f3f3;
+}
+/* Two-column layout */
+.left-column {
+  color: #777;
+  width: 20%;
+  height: 92%;
+  float: left;
+}
+.left-column h2:last-of-type, .left-column h3:last-child {
+  color: #000;
+}
+.right-column {
+  width: 75%;
+  float: right;
+  padding-top: 1em;
+}
+.pull-left {
+  float: left;
+  width: 47%;
+}
+.pull-right {
+  float: right;
+  width: 47%;
+}
+.pull-right + * {
+  clear: both;
+}
+img, video, iframe {
+  max-width: 100%;
+}
+blockquote {
+  border-left: solid 5px lightgray;
+  padding-left: 1em;
+}
+.remark-slide table {
+  margin: auto;
+  border-top: 1px solid #666;
+  border-bottom: 1px solid #666;
+}
+.remark-slide table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+.remark-slide thead, .remark-slide tfoot, .remark-slide tr:nth-child(even) { background: #eee }
+
+@page { margin: 0; }
+@media print {
+  .remark-slide-scaler {
+    width: 100% !important;
+    height: 100% !important;
+    transform: scale(1) !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+}
+
+/*~~~~~~~~~~~~~~*/
+/*  Additions   */
+/*~~~~~~~~~~~~~~*/
+
+.title-slide h4 {
+    color: red;
+}
+
+
+
+/* From Rutgers */
+
+
+/* Title slide */
+
+/* Add image and change bg color */
+/*.title-slide {
+  background-image: url(https://github.com/jvcasillas/ru_xaringan/raw/master/img/logo/ru_shield.png);
+  background-position: 9% 15%;
+  background-size: 55px;
+  background-color: #272822;
+  padding-left: 100px;  /* delete this for 4:3 aspect ratio */
+/*}
+
+/* From duke */
+
+/* Colors are defined by the          */
+/* Duke Branding Color Palette        */
+/* https://styleguide.duke.edu/color-palette/   */
+
+.Large { font-size: 144% }
+.large { font-size: 120% }
+.small { font-size: 90% }
+.footnotesize { font-size: 80% }
+.scriptsize { font-size: 70% }
+.tiny { font-size: 60% }
+
+.black { color: black; }
+.red { color: #CC3300; }
+.blue { color: #003366; }
+.green { color: #728302; }
+.yellow { color: #FFD960; }
+.orange { color: #F09905; }
+.purple { color: #993399; }
+.gray { color: #666666; }
+.grey { color: #B5B5B5; }
+
+.bold { font-weight: bold; }
+.bolder { font-weight: bolder; }
+
+
+.content-box {
+    box-sizing: content-box;
+    	background-color: #e2e2e2;
+  /* Total width: 160px + (2 * 20px) + (2 * 8px) = 216px
+     Total height: 80px + (2 * 20px) + (2 * 8px) = 136px
+     Content box width: 160px
+     Content box height: 80px */
+}
+
+
+.content-box-blue,
+.content-box-gray,
+.content-box-grey,
+.content-box-neutral,
+.content-box-duke-green,
+.content-box-green,
+.content-box-purple,
+.content-box-red,
+.content-box-yellow {
+    border-radius: 15px;
+    margin: 0 0 25px;
+    overflow: hidden;
+    padding: 20px;
+    width: 100%;
+}
+
+.content-box-blue {
+    /* set opacity in last decimal value of rgba */
+    background-color: rgb(51,153,153);
+    background-color: rgba(51,153,153,.85);
+
+}
+
+.content-box-gray {
+    /* set opacity in last decimal value of rgba */
+    background-color: rgb(102, 102, 102);
+    background-color: rgba(102, 102, 102,.85);
+}
+
+.content-box-grey {
+  /* set opacity: uncomment rgba line */
+  /* alter opacity with last decimal value of rgba */
+	background-color: rgb(181, 181, 181);
+  /* background-color: rgba(181, 181, 181,.85); */
+}
+
+.content-box-neutral {
+  background-color: #988675;
+}
+
+
+.content-box-duke-green {
+  /* set opacity in last decimal value of rgba */
+	background-color: rgb(114, 131, 2);
+  background-color: rgba(114, 131, 2,.85);
+}
+
+.content-box-green {
+  /* set opacity in last decimal value of rgba */
+	background-color: rgb(161, 183, 13);
+  background-color: rgba(161, 183, 13,.85);
+}
+
+.content-box-purple {
+  /* set opacity in last decimal value of rgba */
+	background-color: rgb(153, 51, 153);
+  background-color: rgba(153, 51, 153, .85)
+}
+
+.content-box-red {
+  /* set opacity in last decimal value of rgba */
+	background-color: rgb(204, 51, 0);
+  background-color: rgba(204, 51, 0,.85)
+}
+
+.content-box-yellow {
+  /* set opacity in last decimal value of rgba */
+	background-color: rgb(255, 217, 96);
+  background-color: rgba(255, 217, 96, .85)
+}
+
+/*******************
+ *
+ * Text alignment / justification
+ *
+ *******************/
+
+.justify-left {
+  text-align: left;
+}
+
+.justify-right {
+  text-align: right;
+}
+
+.justify-center {
+  text-align: center;
+}

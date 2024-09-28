@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Understanding meta-analysis through data simulation</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Filippo Gambarota" />
+    <script src="understanding-meta-simulations_files/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Understanding meta-analysis through data simulation
+]
+.author[
+### Filippo Gambarota
+]
+.date[
+### <span class="citation">@psicostat</span> </br> </br> 03-05-2023
+]
+
+---
+
+
+
+
+class: inverse, center, middle
+
+
+
+# The starting point...
+
+---
+
+# The starting point...
+
+![](img/debruine2021.png)
+
+---
+
+# The starting point...
+
+- linear **mixed-effects models** (LMM) are **powerful**, **useful** and often there is **no plausible alternative**
+- implementing LMM can be easy but understanding the theory/assumptions or interpreting results can be hard
+- simulating data can be an useful tool to understand LMM, **BUT**:
+
+--
+
+**while(TRUE){**
+
+.center[
+![](img/learningbysim.svg)
+&lt;/center&gt;
+]
+**}**
+
+---
+
+# However...
+
+Just **understanding a little bit of theory can be enough to set-up a VERY useful simulation** then by seeing the simulation result we can understand more about the theory.
+
+.center[
+&lt;iframe src="https://giphy.com/embed/StKiS6x698JAl9d6cx" width="400" height="400" frameBorder="0"&gt;&lt;/iframe
+]
+
+---
+class: inverse, center, middle
+
+# A quick example
+
+---
+
+# A quick example, Welch t-test &lt;sup&gt;1&lt;/sup&gt;
+
+We are learning the t-test, and we read that if the two sample comes from populations with the same variance, we can use the regular t-test otherwise we should use the so-called Welch t-test.
+
+&lt;img src="understanding-meta-simulations_files/figure-html/unnamed-chunk-1-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+.footnote[[1] http://daniellakens.blogspot.com/2015/01/always-use-welchs-t-test-instead-of.html]
+
+---
+
+# Cool! but why?
+
+Without looking at the formula, let's simply try to simulate a t-test where we know the two populations have different variance and also simulate different sample size between the two groups:
+
+
+```r
+nsim &lt;- 1e4
+
+n0 &lt;- 30
+n1 &lt;- 20
+m0 &lt;- 0
+m1 &lt;- 0
+sratio &lt;- 3
+
+equal_t &lt;- vector(mode = "list", length = nsim)
+unequal_t &lt;- vector(mode = "list", length = nsim)
+
+for(i in 1:nsim){
+  g0 &lt;- rnorm(n0, m0, 1)  
+  g1 &lt;- rnorm(n1, m0, sratio)
+  equal_t[[i]] &lt;- t.test(g0, g1, var.equal = TRUE)
+  unequal_t[[i]] &lt;- t.test(g0, g1, var.equal = FALSE)
+}
+```
+
+---
+# Cool! but why?
+
+
+```r
+p_equal &lt;- sapply(equal_t, function(x) x$p.value)
+p_unequal &lt;- sapply(unequal_t, function(x) x$p.value)
+
+mean(p_equal &lt;= 0.05)
+mean(p_unequal &lt;= 0.05)
+```
+
+
+```
+## [1] 0.0975
+```
+
+```
+## [1] 0.0476
+```
+
+The probability of making type-1 error is almost two times higher when using the standard t test 😱.
+
+---
+# Cool! but why?
+
+Let's have a better look at the simulation results. We find the answer! The standard error is systematically lower using the standard t-test thus increasing the t value and the number of low p-values inflating the type-1 error rate.
+
+&lt;img src="understanding-meta-simulations_files/figure-html/unnamed-chunk-5-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+---
+# Cool! but why?
+
+.pull-left[
+
+### Standard t-test
+
+`$$t = \frac{\bar{X_1} - \bar{X_2}}{s_p\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$$`
+
+`$$s_p = \sqrt{\frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}}$$`
+
+]
+
+.pull-right[
+
+### Welch's t-test
+
+`$$t = \frac{\bar{X_1} - \bar{X_2}}{\sqrt{SE^2_{\bar X_1} + SE^2_{\bar X_2}}}$$`
+`$$SE_{X_i} = \frac{s_i}{\sqrt{n_i}}$$`
+]
+
+.footnote[Also the degrees of freedom calculation is different between the two approaches]
+
+---
+class: inverse, center, middle
+
+# What about meta-analysis?
+
+---
+
+# What about meta-analysis?
+
+Meta-analysis and mixed-effects models have a lot in commons:
+
+- also meta-analysis are very useful, especially in the context of the scientific crisis in psychology
+- they are used a lot but not always the theory and the interpretation is clear
+- also from the statistical point of view, random-effects models and meta-analysis are very similar
+
+For this reason, we decided to apply the same idea of Debruine and Barr &lt;a name=cite-DeBruine2021-su&gt;&lt;/a&gt;([DeBruine and Barr, 2021](https://doi.org/10.1177/2515245920965119)) to meta-analysis!
+
+---
+
+# Another coincidence...
+
+Beyond the Debruine and Barr ([DeBruine and Barr, 2021](https://doi.org/10.1177/2515245920965119)) work, we also had to calculate the statistical power for a multi-lab study. Again, multi-lab studies have a lot in common with meta-analysis and calculating statistical power with simulations is very easy and flexible!
+
+.pull-left[
+
+### Multi-lab study
+
+- different research groups performing the same experiment
+- the statistical unit is the research group
+- the difference between research groups (i.e., heterogeneity) could impact the results
+
+]
+
+.pull-right[
+
+### Meta-analysis
+
+- collecting published studies on a research topic
+- the statistical unit is the published study
+- the difference between studies methods (i.e., heterogeneity) could impact the results
+
+
+]
+
+---
+
+# Veeeery quick intro about meta-analysis!
+
+.center[
+![](img/bigpicture.svg)
+&lt;/center&gt;
+]
+
+---
+# Veeeery quick intro about meta-analysis!
+
+By switching the statistical unit one level up (from participants to studies) the meta-analysis can be considered as a weighted average of summary statistics (e.g., effect sizes) giving more weight (i.e., trusting more) studies with higher sample size and/or less variability.
+
+&lt;img src="understanding-meta-simulations_files/figure-html/unnamed-chunk-6-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Overall simulation setup
+
+&lt;img src="img/flow.svg" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse, center, middle
+
+# Let's simulate!
+
+---
+# Simulating a single study
+
+The easiest way is starting by simulating a single study. Let's assume that we are assessing the effect of a new treatment comparing two groups. We simulate that the true effect size in Cohen's `\(d\)` scale is `\(d = 0.4\)`. Each study hypothetical study of our meta-analysis collected `\(n = 30\)` participants per group and measure the difference.
+
+
+```r
+set.seed(2023)
+mc &lt;- 0 # mean of the control group
+mt &lt;- 0.4 # mean of the experimental group
+n &lt;- 30 # sample size
+
+gc &lt;- rnorm(n, mc, 1) # control group
+gt &lt;- rnorm(n, mt, 1) # experimental group
+
+sim &lt;- data.frame(group = rep(c("control", "exp"), each = n),
+                  y = c(gc, gt))
+head(sim)
+```
+
+```
+##     group           y
+## 1 control -0.08378436
+## 2 control -0.98294375
+## 3 control -1.87506732
+## 4 control -0.18614466
+## 5 control -0.63348570
+## 6 control  1.09079746
+```
+
+---
+# Calculating effect size and variance
+
+We can calculate the Cohen's `\(d\)` and the sampling variance:
+
+
+```r
+# compute summary statistics
+sim_sum &lt;- sim |&gt; 
+    group_by(group) |&gt;  
+    summarise(m = mean(y),
+              s = sd(y),
+              n = n()) |&gt; 
+    pivot_wider(names_from = group, values_from = c(m, s, n))
+
+sim_sum
+```
+
+```
+## # A tibble: 1 × 6
+##   m_control m_exp s_control s_exp n_control n_exp
+##       &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt; &lt;int&gt;
+## 1    0.0509 0.763     0.985 0.948        30    30
+```
+---
+# Calculating effect size and variance
+
+We can manually calculate the Cohen's `\(d\)` and the sampling variance or we can use the `metafor::escalc()` function that calculate basically every effect size measures:
+
+
+```r
+sim_sum &lt;- escalc(measure = "SMD", 
+       m1i = m_control, m2i = m_exp,
+       sd1i = s_control, sd2i = s_exp,
+       n1i = n_control, n2i = n_exp,
+       data = sim_sum)
+sim_sum
+```
+
+```
+## 
+##    m_control     m_exp s_control    s_exp n_control n_exp      yi     vi 
+## 1 0.05086288 0.7630755 0.9853397 0.948271        30    30 -0.7270 0.0711
+```
+
+---
+# Put everything into a function! &lt;sup&gt;1&lt;/sup&gt;
+
+```r
+
+sim_study &lt;- function(theta, nt, nc = NULL, hedges = TRUE, aggregate = TRUE){
+    if(is.null(nc)) nc &lt;- nt
+    # generate from normal distribution
+    yc &lt;- rnorm(nc, 0, 1)
+    yt &lt;- rnorm(nt, theta, 1)
+    # pooled variance
+    sp &lt;- sqrt((var(yc)*(nc - 1) + var(yt)*(nt - 1)) / (nc + nt - 2))
+    # effect size
+    yi &lt;- (mean(yt) - mean(yc)) / sp
+    
+    # transform to hedges' g
+    if(hedges){
+        yi &lt;- yi * metafor:::.cmicalc(nc + nt - 2)
+    }
+    
+    # sampling variance
+    vi &lt;- (nc + nt)/(nc * nt) + yi^2/(2 * (nc + nt - 2))
+    
+    if(!aggregate){
+        # return raw data
+        data.frame(id = 1:(nc + nt),
+                   group = rep(c("c", "t"), c(nc, nt)),
+                   y = c(yc, yt))
+    }else{
+        # compute effect size
+        data.frame(yi, vi)
+    }
+}
+
+```
+
+.footnote[[1] This implementation is a little bit different but the result is the same!]
+
+---
+# Now we can simulate several studies!
+
+
+```r
+set.seed(2023)
+sim_study(mt, n, n)
+```
+
+```
+##          yi         vi
+## 1 0.7269584 0.07122243
+```
+
+```r
+sim_study(mt, n, n)
+```
+
+```
+##          yi         vi
+## 1 0.5964462 0.06973346
+```
+
+```r
+sim_study(mt, n, n)
+```
+
+```
+##          yi         vi
+## 1 0.5313377 0.06910046
+```
+
+---
+# Now we can simulate several studies!
+
+Let's simulate a meta-analysis dataset with `\(k = 10\)` studies:
+
+
+```r
+k &lt;- 10
+dat &lt;- make_data(k, n, n, d = mt)
+head(dat)
+```
+
+```
+##   id nt nc   d
+## 1  1 30 30 0.4
+## 2  2 30 30 0.4
+## 3  3 30 30 0.4
+## 4  4 30 30 0.4
+## 5  5 30 30 0.4
+## 6  6 30 30 0.4
+```
+
+---
+# Now we can simulate several studies!
+
+
+```r
+set.seed(2023)
+res &lt;- vector(mode = "list", length = k)
+
+for(i in 1:k){
+    res[[i]] &lt;- sim_study(dat$d[i], dat$nt[i], dat$nc[i])
+}
+
+res &lt;- dplyr::bind_rows(res)
+dat &lt;- cbind(dat, res)
+
+head(dat)
+```
+
+```
+##   id nt nc   d          yi         vi
+## 1  1 30 30 0.4  0.72695836 0.07122243
+## 2  2 30 30 0.4  0.59644625 0.06973346
+## 3  3 30 30 0.4  0.53133768 0.06910046
+## 4  4 30 30 0.4 -0.44657882 0.06838591
+## 5  5 30 30 0.4  1.09320463 0.07696922
+## 6  6 30 30 0.4  0.06359731 0.06670153
+```
+
+
+---
+# Now we can simulate several studies!
+
+The `sim_studies()` function simply apply the `sim_study` to each row of the dataset.
+
+
+
+
+```r
+set.seed(2023)
+dat &lt;- sim_studies(theta = dat$d, 
+                   nc = dat$nc, nt = dat$nt,
+                   data = dat)
+head(dat)
+```
+
+```
+##   id nt nc   d          yi         vi
+## 1  1 30 30 0.4  0.72695836 0.07122243
+## 2  2 30 30 0.4  0.59644625 0.06973346
+## 3  3 30 30 0.4  0.53133768 0.06910046
+## 4  4 30 30 0.4 -0.44657882 0.06838591
+## 5  5 30 30 0.4  1.09320463 0.07696922
+## 6  6 30 30 0.4  0.06359731 0.06670153
+```
+
+---
+# Fixed-effects model
+
+Implicitly we simulated a **fixed-effects** meta-analysis model. This type of model assume that the there is an unique true treatment effect `\(\theta_f\)` and each study is a more or less precise estimation of this effect:
+
+`$$d_i = \theta_f + \epsilon_i$$`
+`$$\epsilon_i \sim \mathcal{N}(0,\sigma^2_i)$$`
+In our example `\(\theta_f = 0.4\)` and the sampling variances are different for each study and they are determined mainly by the sample size of each study and by the effect size itself.
+
+---
+# Fixed-effects model
+
+&lt;img src="understanding-meta-simulations_files/figure-html/unnamed-chunk-17-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Fixed-effects model
+
+Now we can fit the meta-analysis model using `metafor::rma()`:
+
+
+```r
+fit_fixed &lt;- rma(yi, vi, data = dat, method = "FE")
+summary(fit_fixed)
+```
+
+```
+## 
+## Fixed-Effects Model (k = 10)
+## 
+##   logLik  deviance       AIC       BIC      AICc   
+##  -8.9216   26.1281   19.8432   20.1457   20.3432   
+## 
+## I^2 (total heterogeneity / total variability):   65.55%
+## H^2 (total variability / sampling variability):  2.90
+## 
+## Test for Heterogeneity:
+## Q(df = 9) = 26.1281, p-val = 0.0019
+## 
+## Model Results:
+## 
+## estimate      se    zval    pval   ci.lb   ci.ub      
+##   0.3741  0.0833  4.4900  &lt;.0001  0.2108  0.5375  *** 
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+# Fixed-effects model
+
+
+```r
+forest(fit_fixed)
+```
+
+&lt;img src="understanding-meta-simulations_files/figure-html/unnamed-chunk-19-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# It is reasonable to assume a fixed-effects model?
+
+The fixed effect model assume that no study-level (research group, language, nation, etc.) or participants-level features (age, sex, etc.) have an impact on the treatment effect. Quite unlikely!
+
+&lt;img src="understanding-meta-simulations_files/figure-html/unnamed-chunk-20-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+# Random-effects model
+
+The random-effects model assume that the treatment effect is a distribution of effects size where in some condition the effect is high in other is low or even absent. We need an extra parameter `\(\tau^2\)` that represent the amount of variability.
+
+`$$d_i = \theta_r + \theta_i + \epsilon_i$$`
+`$$\theta_i \sim \mathcal{N}(0, \tau^2)$$`
+`$$\epsilon_i \sim \mathcal{N}(0,\sigma^2_i)$$`
+Now, `\(\theta_r\)` is the **average** effect across all conditions and `\(\theta_i\)` is each study-specific adjustment to this overall effect. `\(\tau\)` determines how much variability there is around `\(\theta_r\)`. If `\(\tau = 0\)` the model is a fixed-effects model.
+
+---
+# Random-effects model
+
+The impact of `\(\tau\)` can be seen plotting the expected distribution from the random-effects model using `dnorm(x, theta_r, tau)`
+
+&lt;img src="understanding-meta-simulations_files/figure-html/unnamed-chunk-21-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Random-effects model
+
+We can easily extend the previous approach by simulating each study not using the same effect but using a vector of effects with variability fixed to `\(\tau\)`:
+
+
+```r
+set.seed(2023)
+k &lt;- 10 # number of studies
+tau2 &lt;- 0.2 # heterogeneity
+
+# simulate the dataset
+dat &lt;- make_data(k = 10, n, n, theta_r = mt)
+
+# simulating the study-specific theta_i
+dat$theta_i &lt;- rnorm(k, 0, sqrt(tau2))
+
+# real effect size for each study
+dat$theta_r_theta_i &lt;- dat$theta_r + dat$theta_i
+
+head(dat)
+```
+
+```
+##   id nt nc theta_r     theta_i theta_r_theta_i
+## 1  1 30 30     0.4 -0.03746950      0.36253050
+## 2  2 30 30     0.4 -0.43958581     -0.03958581
+## 3  3 30 30     0.4 -0.83855560     -0.43855560
+## 4  4 30 30     0.4 -0.08324642      0.31675358
+## 5  5 30 30     0.4 -0.28330342      0.11669658
+## 6  6 30 30     0.4  0.48781946      0.88781946
+```
+
+---
+# Random-effects model
+
+
+```r
+set.seed(2023)
+dat &lt;- sim_studies(theta = dat$theta_r_theta_i, nt = dat$nt, nc = dat$nc,
+                   data = dat)
+
+head(dat)
+```
+
+```
+##   id nt nc theta_r     theta_i theta_r_theta_i         yi         vi
+## 1  1 30 30     0.4 -0.03746950      0.36253050  0.6887131 0.07075568
+## 2  2 30 30     0.4 -0.43958581     -0.03958581  0.1770948 0.06693703
+## 3  3 30 30     0.4 -0.83855560     -0.43855560 -0.3417267 0.06767337
+## 4  4 30 30     0.4 -0.08324642      0.31675358 -0.5305050 0.06909284
+## 5  5 30 30     0.4 -0.28330342      0.11669658  0.7635411 0.07169249
+## 6  6 30 30     0.4  0.48781946      0.88781946  0.5133643 0.06893859
+```
+
+---
+# Random-effects model
+
+Similarly, we can fit the random-effects model with the `metafor::rma()` function:
+
+
+```r
+fit_random &lt;- rma(yi, vi, data = dat, method = "REML")
+summary(fit_random)
+```
+
+```
+## 
+## Random-Effects Model (k = 10; tau^2 estimator: REML)
+## 
+##   logLik  deviance       AIC       BIC      AICc   
+##  -7.9644   15.9287   19.9287   20.3232   21.9287   
+## 
+## tau^2 (estimated amount of total heterogeneity): 0.2697 (SE = 0.1600)
+## tau (square root of estimated tau^2 value):      0.5193
+## I^2 (total heterogeneity / total variability):   79.49%
+## H^2 (total variability / sampling variability):  4.87
+## 
+## Test for Heterogeneity:
+## Q(df = 9) = 42.4709, p-val &lt; .0001
+## 
+## Model Results:
+## 
+## estimate      se    zval    pval    ci.lb   ci.ub    
+##   0.2228  0.1842  1.2091  0.2266  -0.1383  0.5839    
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+# Random-effects model
+
+
+```r
+forest(fit_random)
+```
+
+&lt;img src="understanding-meta-simulations_files/figure-html/unnamed-chunk-25-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Power analysis
+
+- In the context of meta-analysis or multi-lab studies, the power analysis is determined by the number of studies and the number of participants in each study.
+
+- There are some methods to compute the power analytically &lt;a name=cite-Borenstein2009-mo&gt;&lt;/a&gt;([Borenstein, Hedges, Higgins, and Rothstein, 2009](https://doi.org/10.1002/9780470743386)) but they make some strong assumptions (e.g., the sample size is the same for each study)
+
+.center[
+&lt;iframe src="https://giphy.com/embed/BtEw37CXZti8yfq3Ke" width="400" height="400" frameBorder="0"&gt;&lt;/iframe
+]
+
+---
+# Power analysis
+
+The idea is very simple:
+
+- Choose some parameters for the sample size, number of studies, true effect and `\(\tau\)`
+- Repeat the simulations that we did before for several times (e.g., 10000)
+- Extract the p-value of the average effect from each iteration
+- Calculate the proportion of p-values equal or lower the `\(\alpha\)` level
+
+Now we have the statistical power estimation using Monte Carlo simulations!
+
+.center[
+&lt;iframe src="https://giphy.com/embed/jrutBd1N7ZhsINAPzs" width="300" height="300" frameBorder="0"&gt;&lt;/iframe
+]
+
+---
+# Power analysis
+
+
+```r
+set.seed(2023)
+nsim &lt;- 1000
+k &lt;- 10
+n &lt;- 30
+theta_r &lt;- 0.3
+tau2 &lt;- 0.2
+alpha &lt;- 0.05
+
+pvals &lt;- replicate(nsim, {
+    dat &lt;- make_data(k, n, n, theta_r)
+    dat$theta_i &lt;- rnorm(k, 0, sqrt(tau2))
+    dat$theta_r_theta_i &lt;- with(dat, theta_r + theta_i)
+    sim &lt;- sim_studies(theta = dat$theta_r_theta_i, nt = dat$nt, nc = dat$nc)
+    fit &lt;- rma(yi, vi, data = sim, method = "REML")
+    fit$pval
+})
+
+mean(pvals &lt;= alpha)
+```
+
+```
+## [1] 0.455
+```
+
+---
+# Power analysis
+
+We can also use multiple conditions to create power curves:
+
+
+
+&lt;img src="understanding-meta-simulations_files/figure-html/unnamed-chunk-28-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Improving the simulation
+
+- simulating different sample sizes along the number of studies
+- simulating heterogeneity in the sample sizes (each study has a different sample size)
+- simulating different sample size among the two groups
+- ...
+
+---
+# Preprint!
+
+In the preprint there are more examples about multilevel/multivariate and meta-regressions models, [https://psyarxiv.com/br6vy/](https://psyarxiv.com/br6vy/) with all the code! 😄
+
+&lt;img src="img/preprint.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# References
+
+&lt;a name=bib-Borenstein2009-mo&gt;&lt;/a&gt;[Borenstein, M., L. V. Hedges, J. P.
+T. Higgins, et al.](#cite-Borenstein2009-mo) (2009). _Introduction to
+Meta-Analysis_. DOI:
+[10.1002/9780470743386](https://doi.org/10.1002%2F9780470743386).
+
+&lt;a name=bib-DeBruine2021-su&gt;&lt;/a&gt;[DeBruine, L. M. and D. J.
+Barr](#cite-DeBruine2021-su) (2021). "Understanding Mixed-Effects
+Models Through Data Simulation". En. In: _Advances in Methods and
+Practices in Psychological Science_ 4.1, p. 2515245920965119. ISSN:
+2515-2459, 2515-2467. DOI:
+[10.1177/2515245920965119](https://doi.org/10.1177%2F2515245920965119).
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

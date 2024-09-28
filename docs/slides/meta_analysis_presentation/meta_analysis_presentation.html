@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>A gentle intro to Meta-analysis 🚀</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Filippo Gambarota" />
+    <meta name="date" content="2021-01-03" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="resources/xaringan_filippo.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# A gentle intro to Meta-analysis 🚀
+### Filippo Gambarota
+### University of Padova - <span class="citation">@Lab</span> Meeting
+### 01/03/2021
+
+---
+
+
+
+class: inverse, center, middle
+
+# Contents
+
+---
+
+# Contents
+
+* ### General Intro
+* ### Meta-analysis steps
+  * Research question
+  * Literature search
+  * Extracting data
+  * Effect Size computation
+  * Effects Size standard error
+* ### Fixed and Random-effect models
+  * Model fitting
+  * Reporting
+
+---
+
+class: inverse, center, middle
+
+# General Intro
+
+---
+
+# General Intro
+
+* ### A meta-analysis is a **quantitative** way to summarize research result about a specific topic, research question or research area.
+
+* ### Shares the **systematic literature search** with narrative or systematic reviews
+
+* ### Beyond "simply" quantifying a phenomenon, the meta-analysis can be considered as a **radiography** of the published literature
+
+* ### Gives insights about holes in literature, could suggest new research topics or support a new experiment
+
+---
+
+# The Meta perspective
+
+&lt;img src="img/multilevel-model.png" width="1668" style="display: block; margin: auto;" /&gt;
+
+.footnote[Source: [Doing meta-analysis in R](https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/mlma.html)]
+
+
+---
+class: inverse, center, middle
+
+# Meta-analysis steps
+
+---
+
+# Research Question
+
+* ### Not all topics can be managed using a meta-analytic approach
+  * **Too broad**: *Efficacy of psychotherapy*
+  * **Too narrow**: Not a problem, but probably a little amount of available papers
+
+* ### *Mixing apple and oranges*
+  * Does makes sense to pull together these *n* articles?
+
+---
+
+# Literature Search
+
+.pull-left[
+
+* ### This is a very crucial and complicated step
+  * Keywords
+  * Systematic research across *databases*
+  * Ideally performed at least by **2 peoples**
+  * A lot of guidelines such as the **PRISMA** approach
+]
+
+.pull-right[
+&lt;img src="img/prisma.png" width="1165" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+# Extracting Data
+
+* ### The first step towards the statistical modeling
+* ### Extract relevant data in order to:
+  * Compute **outcome** (e.g., effect size) measures
+  * Select relevant **moderators** for the meta-regression
+* ### These moderators need to be theoretically relevant and should be selected before starting the meta-analysis. At the same time exploratory analysis is perfectly fine.
+
+---
+
+# Effect Size Computation
+
+The effect size is number that quantify the **strength of an effect** in the population that is estimated from our sample
+
+&lt;img src="meta_analysis_presentation_files/figure-html/unnamed-chunk-3-1.png" width="576" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Effect Size Computation
+
+.pull-left[
+
+### Correlation
+
+`$$r =\frac{ \sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum_{i=1}^{n}(x_i-\bar{x})^2}\sqrt{\sum_{i=1}^{n}(y_i-\bar{y})^2}}$$`
+
+]
+
+.pull-left[
+
+### Standardized Mean Difference (e.g., Cohen's `\(d\)`)
+
+`$$d = \frac{M_1 - M_2}{SD_{pooled}}$$`
+]
+
+---
+
+# Effect Size Standard Error
+
+In statistics, every population parameter estimation has an associated uncertainty measure: **Standard Error**. Given that our sample size is always a subset of the population, our estimation is not perfect.
+
+Example: estimation of the males height in Italy
+
+* `\(\theta\)` = real population height (175cm; but unknown in real research)
+* We took a sample `\(S\)` of size `\(n\)`, with observed mean `\(\bar{X}\)` and standard deviation `\(s\)`
+* From statistical theory we know that `\(\bar{X}\)` is a good estimator of `\(\theta\)` but with a given uncertainty:
+
+`$$SE = \frac{s}{\sqrt{n}}$$`
+---
+
+# Effect Size Standard Error
+
+.pull-left[
+
+* The estimated mean is the same but the **uncertainty vary as a function of sample size**
+* A study with an **higher sample size** has a **greater estimation precision**
+
+]
+
+.pull-right[
+&lt;img src="meta_analysis_presentation_files/figure-html/unnamed-chunk-4-1.png" width="504" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Quick Recap
+
+### We have:
+
+  * Defined our research question
+  * Found relevant literature
+  * Gathered important data
+  * For each study:
+    * Outcome measure
+    * Measure uncertainty (i.e., Standard Error)
+
+---
+
+class: inverse, center, middle
+
+# Meta-analysis models
+
+---
+
+# Meta-analysis models
+
+* ### The basic meta-analytic model can be considered a weighted average where all information is combined giving **more weight** to **more precise** studies
+* ### From a linear regression point of view, is the simplest model (aka null model) where only the (weighted) mean is estimated
+* ### Two main meta-analytic models:
+  * Fixed-effect or Equal effect model 
+  * Random-effect model
+
+---
+
+# Equal-effect model
+
+&lt;img src="img/fixed_effect.svg" height="500" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Equal-effect model
+
+.pull-left[
+
+Model:
+
+`$$y_i = \theta + \epsilon_i$$`
+
+`$$\epsilon_i \sim Normal(0, v_i)$$`
+
+`$$\hat{\theta} = \frac{\sum{w_iy_i}}{\sum{w_i}}$$`
+`$$w_i = \frac{1}{v_i}$$`
+]
+
+.pull-right[
+
+* Weighted average where the weight is the inverse of the study precision (i.e., inverse variance weight)
+* More precision = more weight
+
+]
+
+---
+
+# Equal-effect model
+
+### The statistical assumption: the **true** (latent) effect is fixed and observed variability is due to different study precision
+
+* Only 1 parameter to estimate and the associated standard error
+* No real between-study variability
+* Each study is considered like a replication of the same effect
+* Meta-regression is not considered --&gt; no variability to explain
+
+### Often (in psychology) not appropriate!!
+
+---
+
+# Random-effect Model
+
+&lt;img src="img/random_effect.svg" height="500" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Random-effect Model
+
+.pull-left[
+
+Model:
+
+`$$y_i = \mu + \theta_i + \epsilon_i$$`
+
+`$$\theta_i \sim Normal(0, \tau)$$`
+
+`$$\hat{\mu} = \frac{\sum{w_iy_i}}{\sum{w_i}}$$`
+`$$w_i = \frac{1}{v_i + \hat{\tau}}$$`
+]
+
+.pull-right[
+
+* Weighted average where the weight is the inverse of the study precision (i.e., inverse variance weight) and the between-study heterogeneity
+* More precision = more weight BUT extreme studies (very low/high precison) are smoothed in terms of final weight
+
+]
+
+---
+
+# Equal-effect model
+
+### The statistical assumption: the **true** (latent) effect is fixed and observed variability is due to different study precision
+
+* Given that we are estimating a distribution of effect and not a single value:
+  * Estimation of `\(\mu\)`
+  * Estimation of `\(\tau\)`
+* `\(\tau\)` is the between-study heterogeneity that can be explained using moderators
+
+---
+# Fixed vs Random-effect model
+
+## Important!
+
+### These two models are not estimating the same quantity from both the statistical and theoretical point of view:
+* **Fixed-effect model**: We are estimating the **true underlying effect**
+* **Random-effect model**: We are estimating the **true average effect** along the effect variability. The same effect, under specific conditions could be higher or lower/absent
+
+---
+class: inverse, center, middle
+
+# Practical Example
+
+---
+# Analysis Steps
+
+- ### Effect size computation
+- ### Model fitting
+  - Model diagnostic
+  - Parameters Intepretation
+  - Forest Plot
+- ### Publication Bias
+- ### Meta-regression
+
+---
+
+# Data
+
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; study &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; minutes &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; yi &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; vi &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chang et al. (2002) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.072 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Chin (1999) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.51 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.049 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Delaney et al. (2002) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.134 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Diego et al. (2002) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.46 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.205 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Diego et al. (2001) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.56 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.173 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Field et al. (2002) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.205 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Field et al. (1996) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.62 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.084 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Groer et al. (1994) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.128 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Hernandez-Reif et al. (1998) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.53 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.215 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Hernandez-Reif et al. (2001) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.171 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+# Data
+
+&lt;img src="meta_analysis_presentation_files/figure-html/unnamed-chunk-8-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+# Model - Metafor
+
+
+
+### Fixed Effect Model
+
+
+```r
+fit.fe &lt;- rma(yi, vi, method = "FE", data = massage)
+```
+
+### Random Effect Model
+
+
+```r
+fit.re &lt;- rma(yi, vi, method = "REML", data = massage)
+```
+
+---
+# Fixed Effect
+
+
+```
+## 
+## Fixed-Effects Model (k = 16)
+## 
+## I^2 (total heterogeneity / total variability):   63.62%
+## H^2 (total variability / sampling variability):  2.75
+## 
+## Test for Heterogeneity:
+## Q(df = 15) = 41.2360, p-val = 0.0003
+## 
+## Model Results:
+## 
+## estimate      se    zval    pval   ci.lb   ci.ub 
+##   0.3542  0.0843  4.2002  &lt;.0001  0.1889  0.5194  *** 
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+
+# Random Effect
+
+
+```
+## 
+## Random-Effects Model (k = 16; tau^2 estimator: REML)
+## 
+## tau^2 (estimated amount of total heterogeneity): 0.1813 (SE = 0.1126)
+## tau (square root of estimated tau^2 value):      0.4258
+## I^2 (total heterogeneity / total variability):   60.96%
+## H^2 (total variability / sampling variability):  2.56
+## 
+## Test for Heterogeneity:
+## Q(df = 15) = 41.2360, p-val = 0.0003
+## 
+## Model Results:
+## 
+## estimate      se    zval    pval   ci.lb   ci.ub 
+##   0.4468  0.1397  3.1992  0.0014  0.1731  0.7205  ** 
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+# Forest Plot
+
+&lt;img src="meta_analysis_presentation_files/figure-html/unnamed-chunk-14-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+# Publication Bias
+
+### Published articles are only a (biased) subset of the research conducted on a particular phenomenon
+* Only "significant" results are published
+* Replication studies are not catchy
+
+### Approaches to Publication Bias
+* Graphical evaluation
+* Test for the presence of publication bias
+* Effect size correction
+
+---
+# Publication Bias - Funnel Plot
+
+&lt;img src="meta_analysis_presentation_files/figure-html/unnamed-chunk-15-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+# Publication Bias - Funnel Plot
+
+&lt;img src="img/funnel.jpg" width="437" height="500" style="display: block; margin: auto;" /&gt;
+
+---
+# Meta-regression
+
+&lt;img src="meta_analysis_presentation_files/figure-html/unnamed-chunk-17-1.png" width="504" style="display: block; margin: auto;" /&gt;
+
+---
+# Meta-regression
+
+### The impact of **minutes** on the estimated effect size:
+
+
+```r
+fit.meta &lt;- rma(yi, vi, method = "REML", data = massage,
+                mods = ~minutes)
+```
+
+---
+# Meta-regression
+
+
+```
+## 
+## Mixed-Effects Model (k = 16; tau^2 estimator: REML)
+## 
+## tau^2 (estimated amount of residual heterogeneity):     0.0187 (SE = 0.0493)
+## tau (square root of estimated tau^2 value):             0.1366
+## I^2 (residual heterogeneity / unaccounted variability): 13.63%
+## H^2 (unaccounted variability / sampling variability):   1.16
+## R^2 (amount of heterogeneity accounted for):            89.71%
+## 
+## Test for Residual Heterogeneity:
+## QE(df = 14) = 13.0270, p-val = 0.5244
+## 
+## Test of Moderators (coefficient 2):
+## QM(df = 1) = 22.9524, p-val &lt; .0001
+## 
+## Model Results:
+## 
+##          estimate      se     zval    pval    ci.lb    ci.ub 
+## intrcpt   -0.4028  0.1881  -2.1415  0.0322  -0.7715  -0.0341    * 
+## minutes    0.0314  0.0066   4.7909  &lt;.0001   0.0186   0.0443  *** 
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+class: inverse, center, middle
+
+# Final considerations
+
+---
+# Final considerations
+
+* ### We know the average effect of interest
+* ### We know which moderators explain our effect variance
+* ### We know which effect we should expect for a future study (i.e., power analysis)
+* ### We know the literature structure about our phenomenon:
+  * missing studies?
+  * future studies?
+
+---
+
+class: inverse, center, middle
+
+# What else?
+
+---
+# What else?
+
+* ### Bayesian meta-analysis
+* ### More complex models (multilevel, multivariate)
+* ### Effect size calculation from computed statistics, p-values, etc.
+* ### Diagnostic: outliers, influential points
+* ### Power of meta-analysis
+
+---
+class: inverse, center, middle
+
+# Some Materials
+
+---
+# Some Materials
+
+* ### [notion.so/filippogambarota/Meta-analysis](https://www.notion.so/filippogambarota/Meta-analysis-5c503baa375a4fdeacd1f9685dc14888)
+
+* ### [Metafor Website](https://www.metafor-project.org/doku.php)
+
+* ### [Wolfgang Viechtbauer Course](https://www.wvbauer.com/doku.php/course_ma)
+
+* ### [Doing Meta-analysis in R](https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/)
+
+---
+class: inverse, center, middle
+
+&lt;br/&gt;
+
+### .large[[filippo.gambarota@phd.unipd.it](mailto:filippo.gambarota@phd.unipd.it)]
+
+&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"&gt;&lt;/path&gt;&lt;/svg&gt; [@fgambarota](https://twitter.com/fgambarota)  
+
+&lt;svg viewBox="0 0 496 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt; [filippogambarota](https://github.com/filippogambarota)
+
+&lt;br/&gt;
+
+.tiny[[Download PDF slides](meta_analysis_presentation.pdf)]
+
+
+&lt;img src="img/final_logo.svg" width="350" style="display: block; margin: auto;" /&gt;
+
+.tiny[Slides made with the [Xaringan](https://github.com/yihui/xaringan) package by [Yihui Xie](https://yihui.name/)]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

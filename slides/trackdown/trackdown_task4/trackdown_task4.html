@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>trackdown</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link rel="stylesheet" href="resources/xaringan_filippo.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+class: title-slide
+
+# trackdown
+
+### Collaborative writing through literate programming in R
+
+&lt;br/&gt;
+
+#### @TASK4-2021 - 19/05/2021
+
+.pull-left[
+#### Filippo Gambarota&lt;sup&gt;1&lt;/sup&gt;
+#### Claudio Zandonella Callegher&lt;sup&gt;1&lt;/sup&gt;
+#### Janosch Linkersdörfer&lt;sup&gt;2&lt;/sup&gt;
+]
+
+.pull-right[
+#### Mathew Ling&lt;sup&gt;3&lt;/sup&gt;
+#### Emily Kothe&lt;sup&gt;3&lt;/sup&gt;
+]
+
+.footnote[
+[1] University of Padova
+
+[2] University of California
+
+[3] Deakin University
+]
+
+---
+class: inverse, center, middle
+
+# A normal academic day...
+
+---
+# Writing
+
+.pull-left[
+
+&lt;iframe src="https://giphy.com/embed/LGWYfM9Dd7Kuc" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen&gt;&lt;/iframe&gt;
+
+]
+
+--
+
+.pull-right[
+
+* Writing bibliography
+
+&lt;br/&gt;
+
+* Copy and paste statistics and results 😱
+
+&lt;br/&gt;
+
+* Tables and figures 😱
+
+&lt;br/&gt;
+
+* Collaboration
+
+]
+
+---
+
+# What about collaboration and file versions?
+
+&lt;img src="img/phd_writing_meme.jpeg" width="35%" style="display: block; margin: auto;" /&gt;
+
+---
+class: section-slide, center, middle
+
+# Is there a solution? 😱
+---
+
+class: inverse, center, middle
+
+# YES! &lt;br/&gt; Literate programming 😍
+
+---
+
+--
+
+.pull-left[
+
+## Code
+
+
+```r
+# Plotting
+plot(data)
+
+# Computing mean
+mean(data$response)
+
+# Statistics
+t.test(response ~ condition)
+```
+
+]
+
+--
+
+.pull-right[
+
+## Text
+
+&lt;img src="img/lorem_ipsum.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+--
+
+These components are usually separated...
+
+---
+
+# Literate programming...
+
+Is a combination of **text** and **code** in order to produce high-quality, reproducible and scalable documents.
+
+.pull-left[
+
+&lt;img src="img/latex.svg" width="30%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="img/markdown.svg" width="30%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="img/r_logo.svg" width="30%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+&lt;img src="img/knitr.svg" width="50%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+# An example...
+
+&lt;iframe src="files/awesome_document.txt" width="100%" height="400px" data-external="1" style="border: none;"&gt;&lt;/iframe&gt;
+
+---
+# An example...
+
+&lt;iframe src="files/example_rmd.html" width="100%" height="400px" data-external="1" style="border: none;"&gt;&lt;/iframe&gt;
+---
+
+class: inverse, center, middle
+
+# This is great! But what about collaboration?
+
+---
+# Literate programming as asynchronus process...
+
+&lt;img src="img/google_doc_1.png" style="border: none;" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Literate programming as asynchronus process...
+
+&lt;img src="img/literate_programming.svg" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse, center, middle
+
+# Collaboration on plain text files
+
+---
+
+The gold standard way to collaborate on plain text files is using a **version control** system:
+
+.pull-left[
+
+&lt;img src="img/git.svg" width="50%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="img/git_flow.svg" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+* .green[**Avoid multiple file version tracking a history**]
+
+&lt;br/&gt;
+
+* .green[**Professional way to manage projects with multiple people**]
+
+&lt;br/&gt;
+
+* .red[**Not intuitive and very different from a standard workflow**]
+
+]
+
+---
+# GIT is powerful but tracking narrative is hard
+
+.pull-left[
+
+**Word-like approach**
+
+&lt;img src="img/google_doc_1.png" style="border: none;" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+.pull-right[
+
+**GIT Diff**
+
+&lt;img src="img/git_text_problem.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+class: inverse, center, middle
+
+# In an ideal world...
+
+---
+
+# In an ideal world...
+
+* Work using a **literate programming** framework
+* **Collaborate on plain text files** similarly as we usually do with Word or Google Docs
+
+&lt;br/&gt;
+&lt;br/&gt;
+
+## This is the aim of the **trackdown** package
+
+---
+class: inverse, center, middle
+
+# The big picture...
+
+---
+# The big picture...
+
+&lt;img src="img/trackdown_big_picture.svg" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse, center, middle
+
+# The trackdown package
+
+---
+
+# The trackdown package
+
+&lt;img src="img/trackdown_package.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse, center, middle
+
+# A suggested workflow
+
+---
+
+# A suggested workflow
+
+&lt;img src="img/workflow.svg" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse, center, middle
+
+# How a trackdown file looks like?
+---
+
+# How a trackdown file looks like?
+
+--
+
+.pull-left[
+
+&lt;iframe src="files/awesome_document.txt" width="100%" height="400px" data-external="1" style="border: none;"&gt;&lt;/iframe&gt;
+
+]
+
+--
+
+.pull-right[
+
+&lt;iframe src="https://docs.google.com/document/d/1wGUY0SlDbt9zJZodJtTsjd338Aats8n_4nP1F8gCAac/edit" width="100%" height="400px" data-external="1" style="border: none;"&gt;&lt;/iframe&gt;
+
+]
+
+---
+# Also the final output
+
+* With the `upload_file()` function is possible to also upload the output document as `.pdf` or `.html`
+
+.pull-left[
+
+&lt;img src="img/trackdown_example.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+&lt;img src="img/pdf_example.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+class: inverse, center, middle
+
+# Other advantages of the plain-text + Google Docs approach
+---
+
+# Other advantages of the plain-text + Google Docs approach
+
+--
+
+* Collaboration with .red[**colleagues with a heterogeneous background**] while keeping all advantages of a **knitr** based document
+
+--
+
+&lt;br/&gt;
+
+* .red[**Spell checking**] using standard tools available online (not completely possible in RStudio)
+
+&lt;br/&gt;
+
+--
+
+* All amazing .red[**collaboration tools available in Google Docs**] (comments, assignments, history, auto-saving, etc.)
+
+
+---
+# Check our repo on Github...
+
+[**ClaudioZandonella/trackdown**](https://github.com/ClaudioZandonella/trackdown) &lt;svg viewBox="0 0 496 512" style="height:1em;position:relative;display:inline-block;top:.1em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+&lt;iframe src="https://github.com/ClaudioZandonella/trackdown" width="100%" height="400px" data-external="1" style="border: none;"&gt;&lt;/iframe&gt;
+
+
+---
+class: split-five
+
+# The developers 😎
+
+.column[
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="img/filippo.jpg" alt="&amp;lt;a href='mailto:filippo.gambarota@phd.unipd.it'&amp;gt;Filippo Gambarota&amp;lt;/a&amp;gt;" width="70%" /&gt;
+&lt;p class="caption"&gt;&lt;a href='mailto:filippo.gambarota@phd.unipd.it'&gt;Filippo Gambarota&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+]
+
+.column[
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="img/claudio.jpeg" alt="&amp;lt;a href='mailto:claudiozandonella@gmail.it'&amp;gt;Claudio Zandonella &amp;lt;br/&amp;gt; Callegher&amp;lt;/a&amp;gt;" width="70%" /&gt;
+&lt;p class="caption"&gt;&lt;a href='mailto:claudiozandonella@gmail.it'&gt;Claudio Zandonella &lt;br/&gt; Callegher&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+]
+
+.column[
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="img/janosch.jpg" alt="&amp;lt;a href='mailto:jlinkersdoerfer@ucsd.edu'&amp;gt;Janosch Linkersdörfer&amp;lt;/a&amp;gt;" width="70%" /&gt;
+&lt;p class="caption"&gt;&lt;a href='mailto:jlinkersdoerfer@ucsd.edu'&gt;Janosch Linkersdörfer&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+]
+
+.column[
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="img/mathew.jpg" alt="&amp;lt;a href='mailto:m.ling@deakin.edu.au'&amp;gt;Mathew Ling&amp;lt;/a&amp;gt;" width="70%" /&gt;
+&lt;p class="caption"&gt;&lt;a href='mailto:m.ling@deakin.edu.au'&gt;Mathew Ling&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+]
+
+.column[
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="img/emily.jpeg" alt="&amp;lt;a href='mailto:emily.kothe@deakin.edu.au'&amp;gt;Emily Kothe&amp;lt;/a&amp;gt;" width="70%" /&gt;
+&lt;p class="caption"&gt;&lt;a href='mailto:emily.kothe@deakin.edu.au'&gt;Emily Kothe&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+]
+
+---
+class: psicostat
+
+# A special thanks to Psicostat members...
+
+Check our [**website**](https://psicostat.dpss.psy.unipd.it/index.html) 😄
+
+&lt;iframe src="https://psicostat.dpss.psy.unipd.it/index.html" width="100%" height="400px" data-external="1" style="border: none;"&gt;&lt;/iframe&gt;
+
+---
+
+class: final-slide, center, middle
+
+&lt;br/&gt;
+&lt;br/&gt;
+
+### .large[[filippo.gambarota@phd.unipd.it](mailto:filippo.gambarota@phd.unipd.it)]
+
+&lt;br/&gt;
+&lt;br/&gt;
+
+.tiny[Slides made with the [Xaringan](https://github.com/yihui/xaringan) package by [Yihui Xie](https://yihui.name/)]
+
+&lt;img src="img/final_logo.svg" width="20%" style="display: block; margin: auto;" /&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

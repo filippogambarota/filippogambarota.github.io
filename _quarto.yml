@@ -2,7 +2,10 @@ project:
   type: website
   output-dir: docs
   resources:
-  - "usb/*"
+    - "usb/*"
+  render:
+    - "*.qmd"
+    - "!slides/"
 
 website:
   page-navigation: true

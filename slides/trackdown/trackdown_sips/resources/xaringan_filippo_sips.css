@@ -1,0 +1,236 @@
+/*  GENERAL SLIDES  */
+
+h1, h2, h3, h4 {
+    color: #117A65;
+}
+
+.Large { font-size: 144% }
+.large { font-size: 120% }
+.small { font-size: 90% }
+.footnotesize { font-size: 20% }
+.scriptsize { font-size: 70% }
+.tiny { font-size: 60% }
+
+a, a > code {
+  color: rgb(249, 38, 114);
+  text-decoration: none;
+}
+
+p.caption {
+  font-size: 0.6em;
+}
+
+.small{
+  font-size: 1px;
+}
+
+.footnote {
+  /*position: absolute;
+  bottom: 3em;
+  padding-right: 4em; */
+  color: white;
+  font-size: 50%;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
+
+.remark-slide-content {
+  font-size: 23px;
+  background-image: url("img/sips_logo.png");
+  background-position: 20px 590px , center;
+  background-size: 85px , 100% 100%, cover ;
+}
+
+.remark-slide table {
+  margin: auto;
+  border-top: 1px solid #666;
+  border-bottom: 1px solid #666;
+}
+.remark-slide table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+.remark-slide thead, .remark-slide tfoot, .remark-slide tr:nth-child(even) { background: #eee }
+
+@page { margin: 0; }
+@media print {
+  .remark-slide-scaler {
+    width: 100% !important;
+    height: 100% !important;
+    transform: scale(1) !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+}
+
+.remark-slide-number {
+    color: none;
+}
+
+/* Two-column layout */
+.left-column {
+  color: #777;
+  width: 20%;
+  height: 92%;
+  float: left;
+}
+.left-column h2:last-of-type, .left-column h3:last-child {
+  color: #000;
+}
+
+.right-column {
+  width: 75%;
+  float: right;
+  padding-top: 1em;
+}
+.pull-left {
+  float: left;
+  width: 47%;
+}
+.pull-right {
+  float: right;
+  width: 47%;
+}
+.pull-right + * {
+  clear: both;
+}
+
+
+/*  TITLE SLIDE  */
+
+
+.title-slide {
+  background-color: white
+  background-image: url('https://www.improvingpsych.org/SIPS2021/wp-content/uploads/2019/06/small-Society-for-the-Improvement-of-Psychological-Science3-300x105.png');
+  background-position: 95% 100%, center ;
+  background-size: 120px, 100% 100%, cover ;
+}
+
+.title-slide h1 {
+    color: black;
+    text-align: center;
+    font-size: 50px;
+}
+
+.title-slide h3 {
+    color: black;
+    text-align: center;
+    font-size: 40px;
+}
+
+.title-slide h4 {
+    color: black;
+    text-align: center;
+    font-size: 20px;
+}
+
+/*  FULLSCREEN SLIDES  */
+
+.fullscreen {
+    background-image: none;
+}
+
+/*  SECTION SLIDE  */
+
+.chapter-slide {
+  background-color: #117A65;
+  background-image: none;
+}
+
+.chapter-slide h1, .chapter-slide h2, .chapter-slide h3 {
+  color: black;
+  color: #e8e8e8;
+  font-size: 50px;
+}
+
+/*  FINAL SLIDE  */
+
+.final-slide {
+  background-color: #272822;
+  background-image: none;
+  color: #d6d6d6;
+}
+
+/*  EXTRA  */
+
+img, video, iframe {
+  max-width: 100%;
+}
+blockquote {
+  border-left: solid 5px lightgray;
+  padding-left: 1em;
+}
+
+.remark-slide-number {
+    display: none;
+}
+
+.chapter-slide .remark-slide-number {
+    color: none;
+}
+
+/*  SPLIT SLIDES  (thanks to emitanaka https://stackoverflow.com/questions/55081930/create-an-image-grid-in-xaringan) */
+
+.nosplit>.column:first-of-type {width: 100%; height:100%; position: absolute; top: 0; left: 0; }
+.split-33>.column:first-of-type {width: 33.33333333333%; height:100%; position: absolute; top: 0; left: 0; }
+.split-33>.column:nth-of-type(2) {width: 66.66666666667%;height:100%;position: absolute;top: 0;right: 0;}
+.split-66>.column:first-of-type {width: 66.66666666667%; height:100%; position: absolute; top: 0; left: 0; }
+.split-66>.column:nth-of-type(2) {width: 33.33333333333%;height:100%;position: absolute;top: 0;right: 0;}
+.split-25>.column:first-of-type {width: 25%; height:100%; position: absolute; top: 0; left: 0; }
+.split-25>.column:nth-of-type(2) {width: 75%;height:100%;position: absolute;top: 0;right: 0;}
+.split-75>.column:first-of-type {width: 75%; height:100%; position: absolute; top: 0; left: 0; }
+.split-75>.column:nth-of-type(2) {width: 25%;height:100%;position: absolute;top: 0;right: 0;}
+.split-10>.column:first-of-type {width: 10%; height:100%; position: absolute; top: 0; left: 0; }
+.split-10>.column:nth-of-type(2) {width: 90%;height:100%;position: absolute;top: 0;right: 0;}
+.split-20>.column:first-of-type {width: 20%; height:100%; position: absolute; top: 0; left: 0; }
+.split-20>.column:nth-of-type(2) {width: 80%;height:100%;position: absolute;top: 0;right: 0;}
+.split-30>.column:first-of-type {width: 30%; height:100%; position: absolute; top: 0; left: 0; }
+.split-30>.column:nth-of-type(2) {width: 70%;height:100%;position: absolute;top: 0;right: 0;}
+.split-40>.column:first-of-type {width: 40%; height:100%; position: absolute; top: 0; left: 0; }
+.split-40>.column:nth-of-type(2) {width: 60%; height:100%; position: absolute; top: 0; right: 0;}
+.split-50>.column:first-of-type {width: 50%; height:100%; position: absolute; top: 0; left: 0; }
+.split-50>.column:nth-of-type(2) {width: 50%; height:100%; position: absolute; top: 0; right: 0;}
+.split-60>.column:first-of-type {width: 60%; height:100%; position: absolute; top: 0; left: 0;}
+.split-60>.column:nth-of-type(2) {width: 40%; height:100%; position: absolute; top: 0; right: 0;}
+.split-70>.column:first-of-type {width: 70%; height:100%; position: absolute; top: 0; left: 0; }
+.split-70>.column:nth-of-type(2) {width: 30%; height:100%; position: absolute; top: 0; right: 0;}
+.split-two>.column:first-of-type {width: 50%; height:100%; position: absolute; top: 0; left: 0; }
+.split-two>.column:nth-of-type(2) {width: 50%; height:100%; position: absolute; top: 0; right: 0;}
+.split-three>.column:first-of-type {width: 33.33333333333%; height:100%; position: absolute; top: 0; left: 0; }
+.split-three>.column:nth-of-type(2) {width: 33.33333333333%; height:100%; position: absolute; top: 0; left: 33.33333333333%;}
+.split-three>.column:nth-of-type(3) {width: 33.33333333333%; height:100%; position: absolute; top: 0; right: 0;}
+.split-four>.column:first-of-type {width: 25%; height:100%; position: absolute; top: 0; left: 0; }
+.split-four>.column:nth-of-type(2) {width: 25%; height:100%; position: absolute; top: 0; left: 25%;}
+.split-four>.column:nth-of-type(3) {width: 25%; height:100%; position: absolute; top: 0; right: 25%;}
+.split-four>.column:nth-of-type(4) {width: 25%; height:100%; position: absolute; top: 0; right: 0;}
+.split-five>.column:first-of-type {width: 20%; height:100%; position: absolute; top: 30%; left: 0; }
+.split-five>.column:nth-of-type(2) {width: 20%; height:100%; position: absolute; top: 30%; left: 20%;}
+.split-five>.column:nth-of-type(3) {width: 20%; height:100%; position: absolute; top: 30%; left: 40%;}
+.split-five>.column:nth-of-type(4) {width: 20%; height:100%; position: absolute; top: 30%; right: 20%;}
+.split-five>.column:nth-of-type(5) {width: 20%; height:100%; position: absolute; top: 30%; right: 0;}
+
+.split-2-1-1>.column:first-of-type {width: 50%; height:100%; position: absolute; top: 0; left: 0; }
+.split-2-1-1>.column:nth-of-type(2) {width: 25%; height:100%; position: absolute; top: 0; right: 25%;}
+.split-2-1-1>.column:nth-of-type(3) {width: 25%; height:100%; position: absolute; top: 0; right: 0;}
+.split-1-1-2>.column:first-of-type {width: 25%; height:100%; position: absolute; top: 0; left: 0; }
+.split-1-1-2>.column:nth-of-type(2) {width: 25%; height:100%; position: absolute; top: 0; left: 25%;}
+.split-1-1-2>.column:nth-of-type(3) {width: 50%; height:100%; position: absolute; top: 0; right: 0;}
+.split-1-2-1>.column:first-of-type {width: 25%; height:100%; position: absolute; top: 0; left: 0; }
+.split-1-2-1>.column:nth-of-type(2) {width: 50%; height:100%; position: absolute; top: 0; left: 25%;}
+.split-1-2-1>.column:nth-of-type(3) {width: 25%; height:100%; position: absolute; top: 0; right: 0;}
+
+/*  VIDEO SLIDES  (thanks to Andy Field  https://stackoverflow.com/questions/58381602/background-video-in-xaringan-slides) */
+
+#my_video {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  width: 100%;
+}
+
+.logo-conf {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+}
