@@ -5,6 +5,8 @@ engine: knitr
 ```{r}
 #| output: asis
 #| echo: false
+#| message: false
+#| warning: false
 qmd <- list.files("statnotes", full.names = TRUE, recursive = TRUE, pattern = "qmd")
 get_title <- function(qmd){
     lines <- readLines(qmd)
