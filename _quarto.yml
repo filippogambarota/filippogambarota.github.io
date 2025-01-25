@@ -3,7 +3,7 @@ project:
   output-dir: docs
   resources:
     - "usb/*"
-    - "*.xlsx"
+    - "*.pdf"
     
   render:
     - "*.qmd"
