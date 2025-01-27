@@ -193,7 +193,7 @@
     "href": "statnotes.html",
     "title": "",
     "section": "",
-    "text": "Warning in readLines(qmd): incomplete final line found on\n'statnotes/understanding-gamma/understanding-gamma.qmd'\n\nMachine Learning Notes [Last update: 2024-05-21]\nAggregating or not? [Last update: 2024-01-28]\nSensitivity Analysis [Last update: 2024-01-28]\nSimulating Effect Sizes [Last update: 2024-01-28]\nUnderstanding (hopefully) the Gamma distribution [Last update: 2025-01-16]\nUnderstanding interactions [Last update: 2024-01-28]"
+    "text": "Warning in readLines(qmd): riga finale incompleta in\n'statnotes/understanding-gamma/understanding-gamma.qmd'\n\nMachine Learning Notes [Last update: 2025-01-27]\nAggregating or not? [Last update: 2025-01-27]\nSensitivity Analysis [Last update: 2025-01-27]\nSimulating Effect Sizes [Last update: 2025-01-27]\nUnderstanding (hopefully) the Gamma distribution [Last update: 2025-01-27]\nUnderstanding interactions [Last update: 2025-01-27]"
   },
   {
     "objectID": "statnotes/meta-analysis-aggregating-or-not/index.html",
